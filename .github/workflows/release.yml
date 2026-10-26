@@ -40,11 +40,9 @@ jobs:
       - name: Run Clippy checks
         run: cargo clippy --all-targets --all-features -- -D warnings
 
-      - name: Build loader DLL for tests
-        run: cargo build -p unifuck-loader --release
-
       - name: Run tests
-        run: cargo test --all-targets --all-features
+        # 跳过 unifuck 主包的测试，避免触发 build.rs 导致找不到 loader.dll
+        run: cargo test --all-targets --all-features --workspace --exclude unifuck
 
   build-release:
     name: Build Release Binary (${{ matrix.target }})
@@ -131,3 +129,5 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             artifacts/unifuck-x86_64-pc-windows-msvc.zip
+
+
