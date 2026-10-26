@@ -56,22 +56,6 @@ jobs:
             archive: unifuck-x86_64-pc-windows-msvc.zip
             artifact_paths: |
               unifuck-x86_64-pc-windows-msvc.zip
-          # Linux x86_64 packaging is parked until the project has a confirmed
-          # Linux desktop packaging path.
-          # - target: x86_64-unknown-linux-gnu
-          #   os: ubuntu-latest
-          #   binary: unifuck
-          #   archive: unifuck-x86_64-unknown-linux-gnu.tar.gz
-          #   artifact_paths: |
-          #     unifuck-x86_64-unknown-linux-gnu.tar.gz
-          # macOS x86_64 packaging is parked until the project has a confirmed
-          # macOS desktop packaging path.
-          # - target: x86_64-apple-darwin
-          #   os: macos-latest
-          #   binary: unifuck
-          #   archive: unifuck-x86_64-apple-darwin.tar.gz
-          #   artifact_paths: |
-          #     unifuck-x86_64-apple-darwin.tar.gz
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -94,6 +78,9 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.target }}-release-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.target }}-release-cargo-
+
+      - name: Build loader DLL
+        run: cargo build --release --package unifuck-loader
 
       - name: Build release binary
         run: cargo build --release --target ${{ matrix.target }} --package unifuck
