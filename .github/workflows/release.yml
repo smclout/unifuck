@@ -40,6 +40,9 @@ jobs:
       - name: Run Clippy checks
         run: cargo clippy --all-targets --all-features -- -D warnings
 
+      - name: Build loader DLL for tests
+        run: cargo build -p unifuck-loader --release
+
       - name: Run tests
         run: cargo test --all-targets --all-features
 
